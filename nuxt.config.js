@@ -12,12 +12,6 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
-    css: [
-      '~/assets/style/app.styl',
-      '@uppy/core/dist/style.css',
-      '@uppy/dashboard/dist/style.css',
-      '@uppy/webcam/dist/style.css'
-    ],
   },
   /*
   ** Customize the progress bar color

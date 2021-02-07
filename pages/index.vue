@@ -1,52 +1,28 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <center>
-        <h1>Nuxt.js + uppy example</h1>
-        <v-btn id="select-files" color="primary">upload</v-btn>
-      </center>
-    </v-flex>
-  </v-layout>
+  <div>
+    <p><canvas id="preview"></canvas></p>
+    <p>
+      <input type="text" id="canvas_text" value="我輩は犬である">
+      <button @click="drawText('preview', 'canvas_text');">文字を描く</button>
+      <button @click="load();">画像を読み込む</button>
+    </p>
+  </div>
 </template>
 
 <script>
-import Uppy from '@uppy/core'
-import XHRUpload from '@uppy/xhr-upload'
-import Dashboard from '@uppy/dashboard'
-import Webcam from '@uppy/webcam'
 export default {
-  data() {
-    return {
-      uppyId: 'uppy-trigger'
+ methods: {
+   upload(){
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        $("#preview").attr('src', e.target.result);
     }
-  },
-  mounted() {
-    const uppy = Uppy()
-      .use(Dashboard, {
-        trigger: '#select-files'
-      })
-      .use(Webcam, { target: Dashboard }) // ウェブカメラを追加
-      .use(XHRUpload, { endpoint: 'https://api2.transloadit.com' }) // ダミーのURLへアップロード
-    uppy.on('complete', result => {
-      // eslint-disable-next-line no-console
-      console.log(
-        'Upload complete! We’ve uploaded these files:',
-        result.successful
-      )
-    })
-  },
-  methods: {
-    upload(e){
-      const file = e.target.files[0]
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        this.generateImgUrl(e.target.result)
-      }
-      reader.readAsDataURL(file)
-    },
-    load () {
+    reader.readAsDataURL(e.target.files[0]);
+   },
+   load () {
+      //画像を読み込んでImageオブジェクトを作成する
       var image = new Image();
-      image.src = './canva.jpg';
+      image.src = 'canva.jpg';
       image.onload = (function () {
         //画像ロードが完了してからキャンバスの準備をする
         var canvas = document.getElementById("preview");
@@ -72,8 +48,8 @@ export default {
       var x = (canvas.width / 2);
       var y = (canvas.height / 2);
       ctx.fillText(text.value, x, y);
-    },
-  },
+   },
+ },
 }
 </script>
 
